@@ -1,14 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface LogoProps {
   className?: string;
   size?: number | string;
   showText?: boolean;
   textColor?: string;
+  asLink?: boolean;
 }
 
 /**
- * Official KC Digital Studio Logo
+ * Official KC NEXUS Logo
  * Faithful vector representation of the brand mark.
  * Preserves exact proportions, aspect ratio, and orange brand identity (#FFA500).
  */
@@ -24,7 +26,7 @@ export const StudioLogoMark: React.FC<{ size?: number | string; className?: stri
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={`shrink-0 ${className}`}
-      aria-label="KC Digital Studio Logo Mark"
+      aria-label="KC NEXUS Logo Mark"
     >
       {/* Left Crescent Shape (C) */}
       <path
@@ -45,27 +47,45 @@ export const Logo: React.FC<LogoProps> = ({
   size = 40,
   showText = true,
   textColor = 'text-white',
+  asLink = true,
 }) => {
-  return (
-    <a
-      href="#home"
-      className={`inline-flex items-center gap-3 transition-opacity hover:opacity-90 group focus:outline-none focus:ring-2 focus:ring-[#FFA500]/50 rounded-lg p-1 ${className}`}
-      aria-label="KC Digital Studio - Home"
-    >
+  const content = (
+    <>
       <div className="relative flex items-center justify-center p-1.5 rounded-xl bg-[#121727]/80 border border-[#282D40] shadow-sm group-hover:border-[#FFA500]/40 transition-colors">
         <StudioLogoMark size={size} />
       </div>
       {showText && (
         <div className="flex flex-col">
           <span className={`font-bold tracking-tight text-lg leading-tight ${textColor} group-hover:text-white transition-colors`}>
-            KC <span className="text-[#FFA500]">Digital</span> Studio
+            KC <span className="text-[#FFA500]">NEXUS</span>
           </span>
           <span className="text-[10px] uppercase tracking-widest text-[#858DA2] font-medium">
-            Creative & Digital
+            Creative &amp; Digital
           </span>
         </div>
       )}
-    </a>
+    </>
+  );
+
+  if (!asLink) {
+    return (
+      <div
+        className={`inline-flex items-center gap-3 group p-1 ${className}`}
+        aria-label="KC NEXUS Logo"
+      >
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <Link
+      to="/"
+      className={`inline-flex items-center gap-3 transition-opacity hover:opacity-90 group focus:outline-none focus:ring-2 focus:ring-[#FFA500]/50 rounded-lg p-1 ${className}`}
+      aria-label="KC NEXUS - Home"
+    >
+      {content}
+    </Link>
   );
 };
 

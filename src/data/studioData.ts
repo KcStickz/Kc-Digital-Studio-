@@ -146,25 +146,69 @@ export const STUDIO_SERVICES: ServiceItem[] = [
   },
 ];
 
+export type PortfolioCategory =
+  | 'Graphic Design'
+  | 'Video Editing'
+  | 'Photography'
+  | 'Videography'
+  | 'Web Development'
+  | 'Software Development'
+  | 'Social Media Management'
+  | 'IT Support';
+
 export interface ProjectItem {
   id: string;
+  slug: string;
   title: string;
   category: string;
-  filterCategory: 'Branding' | 'Web Design' | 'Graphics' | 'Photography' | 'Video' | 'Social Media';
+  filterCategory: PortfolioCategory;
   description: string;
   fullOverview: string;
-  image: string;
+  image?: string;
+  videoUrl?: string;
+  projectLink?: string;
   deliverables: string[];
-  clientScope: string;
-  year: string;
+  clientScope?: string;
+  year?: string;
 }
 
+/**
+ * ============================================================================
+ * KC NEXUS — OFFICIAL PORTFOLIO PROJECTS LIST
+ * ============================================================================
+ * 
+ * HOW TO ADD A NEW PROJECT MANUALLY (EASY 60-SECOND PROCESS):
+ * 
+ * 1. Open this file: src/data/studioData.ts
+ * 2. Copy the template block below and paste it anywhere inside STUDIO_PROJECTS.
+ * 3. Fill in your project title, description, category, and image/video links.
+ * 4. Save the file. The portfolio updates immediately!
+ * 
+ * --- COPY-PASTE TEMPLATE ---
+ * {
+ *   id: 'my-project-slug',
+ *   slug: 'my-project-slug',
+ *   title: 'My Project Name',
+ *   category: 'Web Development', // Pick from: 'Graphic Design' | 'Video Editing' | 'Photography' | 'Videography' | 'Web Development' | 'Software Development' | 'Social Media Management' | 'IT Support'
+ *   filterCategory: 'Web Development',
+ *   description: 'Short 1-sentence summary of the project.',
+ *   fullOverview: 'Comprehensive overview explaining the project goals, process, and results.',
+ *   image: 'https://i.ibb.co/.../image.jpg', // Paste ImgBB direct link or any image URL (optional)
+ *   videoUrl: 'https://www.youtube.com/watch?v=...', // Paste YouTube, YouTube Shorts, or Vimeo URL (optional)
+ *   projectLink: 'https://example.com', // Live demo link (optional)
+ *   deliverables: ['Custom Feature 1', 'Custom Feature 2'],
+ *   clientScope: 'Client Engagement or Creative Concept',
+ *   year: '2026',
+ * },
+ * ============================================================================
+ */
 export const STUDIO_PROJECTS: ProjectItem[] = [
   {
     id: 'brand-identity-concept',
+    slug: 'brand-identity-design',
     title: 'Brand Identity Design',
-    category: 'Branding',
-    filterCategory: 'Branding',
+    category: 'Graphic Design',
+    filterCategory: 'Graphic Design',
     description: 'Visual identity and branding concepts.',
     fullOverview: 'Comprehensive visual identity system showcasing typography guidelines, brand palette hierarchy, bespoke stationary mockups, and corporate brand guidelines.',
     image: portfolioBrandingImg,
@@ -174,21 +218,24 @@ export const STUDIO_PROJECTS: ProjectItem[] = [
   },
   {
     id: 'business-website-concept',
+    slug: 'business-website',
     title: 'Business Website',
     category: 'Web Development',
-    filterCategory: 'Web Design',
+    filterCategory: 'Web Development',
     description: 'Responsive website design and development.',
     fullOverview: 'High-performance responsive corporate web platform engineered with rapid loading architecture, fluid responsive viewports, and clean UI/UX components.',
     image: portfolioWebImg,
+    projectLink: 'https://ais-dev-hyeionh46ju7l53ss27ewp-97741256986.europe-west2.run.app',
     deliverables: ['Responsive Web App', 'Interactive UI Design', 'SEO Integration', 'Performance Tuning'],
     clientScope: 'Digital Presence Platform',
     year: '2026',
   },
   {
     id: 'social-media-graphics-concept',
+    slug: 'social-media-graphics',
     title: 'Social Media Graphics',
     category: 'Graphic Design',
-    filterCategory: 'Graphics',
+    filterCategory: 'Graphic Design',
     description: 'Promotional graphics and branded digital content.',
     fullOverview: 'Eye-catching promotional flyers, social banners, and event posters utilizing energetic visual typography, bold contrasts, and balanced negative space.',
     image: portfolioGraphicsImg,
@@ -198,6 +245,7 @@ export const STUDIO_PROJECTS: ProjectItem[] = [
   },
   {
     id: 'portrait-product-photo-concept',
+    slug: 'portrait-product-photography',
     title: 'Portrait & Product Photography',
     category: 'Photography',
     filterCategory: 'Photography',
@@ -210,9 +258,10 @@ export const STUDIO_PROJECTS: ProjectItem[] = [
   },
   {
     id: 'video-production-concept',
+    slug: 'video-production',
     title: 'Video Production',
     category: 'Videography',
-    filterCategory: 'Video',
+    filterCategory: 'Videography',
     description: 'Video content for events, brands, and digital platforms.',
     fullOverview: 'On-set cinematography and multi-angle camera configuration for commercial promotions, brand documentaries, and corporate highlights.',
     image: portfolioVideoImg,
@@ -222,9 +271,10 @@ export const STUDIO_PROJECTS: ProjectItem[] = [
   },
   {
     id: 'video-editing-concept',
+    slug: 'promotional-video-editing',
     title: 'Promotional Video Editing',
     category: 'Video Editing',
-    filterCategory: 'Video',
+    filterCategory: 'Video Editing',
     description: 'Edited video content for online communication.',
     fullOverview: 'Precision timeline post-production featuring sound design, color balance, visual rhythm, motion lower thirds, and social aspect ratio formatting.',
     image: portfolioEditingImg,
@@ -234,9 +284,10 @@ export const STUDIO_PROJECTS: ProjectItem[] = [
   },
   {
     id: 'social-media-content-concept',
+    slug: 'social-media-content',
     title: 'Social Media Content',
-    category: 'Social Media',
-    filterCategory: 'Social Media',
+    category: 'Social Media Management',
+    filterCategory: 'Social Media Management',
     description: 'Creative assets for digital platforms.',
     fullOverview: 'Unified digital content framework including carousel storytelling slides, reels cover templates, and strategic visual grids designed for engagement.',
     image: portfolioSocialImg,
@@ -246,14 +297,28 @@ export const STUDIO_PROJECTS: ProjectItem[] = [
   },
   {
     id: 'digital-workspace-concept',
-    title: 'Digital Systems & Development',
-    category: 'Software & Web',
-    filterCategory: 'Web Design',
-    description: 'Practical digital solutions and workflow interfaces.',
+    slug: 'digital-systems-architecture',
+    title: 'Digital Systems & Architecture',
+    category: 'Software Development',
+    filterCategory: 'Software Development',
+    description: 'Practical software solutions and digital workflows.',
     fullOverview: 'Integrated application interface and system optimization project designed for operational clarity, fast data entry, and dependable tech performance.',
     image: aboutWorkspaceImg,
     deliverables: ['Dashboard UI', 'Data Architecture', 'Responsive Layout', 'System Documentation'],
     clientScope: 'Interactive Systems Prototype',
+    year: '2026',
+  },
+  {
+    id: 'it-support-concept',
+    slug: 'enterprise-it-support',
+    title: 'Enterprise IT Maintenance & Support',
+    category: 'IT Support',
+    filterCategory: 'IT Support',
+    description: 'Network infrastructure setup, hardware troubleshooting, and systems reliability.',
+    fullOverview: 'Comprehensive workstation diagnostics, Windows environment configuration, safe system backup routines, and responsive hardware troubleshooting.',
+    image: heroCompositionImg,
+    deliverables: ['Hardware Support', 'Operating Systems', 'Network Routing', 'Preventive Maintenance'],
+    clientScope: 'Technical Systems Maintenance',
     year: '2026',
   },
 ];
@@ -283,13 +348,14 @@ export const STUDIO_PRINCIPLES = [
 ];
 
 export const CONTACT_INFO = {
-  brandName: 'Kc Digital Studio',
+  brandName: 'KC NEXUS',
+  founderName: 'OKO-OBENI KELECHI SALVATION',
   email: 'okoobenikelechisalvation@gmail.com',
   phone1: '+234 814 569 1772',
   phone2: '+234 902 998 6126',
-  whatsappUrl: 'https://wa.me/2348145691772?text=Hello%20KC%20Digital%20Studio%2C%20I%20would%20like%20to%20enquire%20about%20a%20project',
+  whatsappUrl: 'https://wa.me/2348145691772?text=Hello%20KC%20NEXUS%2C%20I%20would%20like%20to%20enquire%20about%20a%20project',
   location: 'Port Harcourt, Rivers State, Nigeria.',
   tagline: 'Creativity Meets Digital Excellence.',
   supportingTagline: 'Design. Develop. Create. Grow.',
-  description: 'KC Digital Studio is a multidisciplinary digital creative studio combining technology, design, and visual storytelling.',
+  description: 'KC NEXUS is a multidisciplinary digital creative studio founded and led by OKO-OBENI KELECHI SALVATION, combining technology, design, and visual storytelling.',
 };

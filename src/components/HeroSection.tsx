@@ -1,21 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { heroCompositionImg } from '../data/studioData';
 
 export const HeroSection: React.FC = () => {
-  const scrollTo = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) {
-      const navHeight = 70;
-      const elementPosition = el.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - navHeight;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-      });
-    }
-  };
-
   return (
     <section id="home" className="relative pt-28 pb-16 sm:pt-36 sm:pb-20 overflow-hidden">
       {/* Background Ambient Radial Glows (matching dark navy and warm orange subtle aura) */}
@@ -30,7 +18,7 @@ export const HeroSection: React.FC = () => {
             {/* Small rounded orange badge */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#121727] border border-[#FFA500]/40 text-[#FFA500] text-xs font-semibold tracking-wider uppercase shadow-[0_0_15px_rgba(255,165,0,0.1)]">
               <Sparkles className="w-3.5 h-3.5 text-[#FFA500]" />
-              <span>Creative Digital Studio</span>
+              <span>Creative Digital Nexus</span>
             </div>
 
             {/* Main Heading */}
@@ -43,7 +31,7 @@ export const HeroSection: React.FC = () => {
 
             {/* Supporting Paragraph */}
             <p className="text-sm sm:text-base text-[#B8BDCA] leading-relaxed max-w-xl">
-              Kc Digital Studio brings ideas to life through web development,
+              <strong className="text-white">KC NEXUS</strong>, directed by <span className="text-white font-medium">OKO-OBENI KELECHI SALVATION</span>, brings ideas to life through web development,
               graphic design, photography, videography, video editing,
               social media management, and digital solutions. We combine creativity
               and technology to help businesses build their online presence,
@@ -52,20 +40,20 @@ export const HeroSection: React.FC = () => {
 
             {/* Buttons: Primary & Secondary */}
             <div className="flex flex-wrap items-center gap-4 pt-2 w-full sm:w-auto">
-              <button
-                onClick={() => scrollTo('portfolio')}
+              <Link
+                to="/portfolio"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full bg-[#FFA500] hover:bg-[#FFB52E] text-black font-bold text-sm tracking-wide transition-all duration-200 shadow-lg shadow-[#FFA500]/25 hover:shadow-[0_0_20px_rgba(255,165,0,0.4)] group"
               >
                 <span>Explore Our Work</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </button>
+              </Link>
 
-              <button
-                onClick={() => scrollTo('contact')}
+              <Link
+                to="/contact"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-[#121727] hover:bg-[#161B2D] text-white font-semibold text-sm border border-[#282D40] hover:border-[#FFA500]/50 transition-all duration-200"
               >
                 <span>Let's Work Together</span>
-              </button>
+              </Link>
             </div>
 
             {/* Availability Indicator */}
@@ -92,7 +80,7 @@ export const HeroSection: React.FC = () => {
                 <div className="aspect-[4/4.5] w-full relative">
                   <img
                     src={heroCompositionImg}
-                    alt="KC Digital Studio - Creative Production & Digital Workspace"
+                    alt="KC NEXUS - Creative Production & Digital Workspace"
                     className="w-full h-full object-cover object-center"
                     loading="eager"
                   />
@@ -113,7 +101,7 @@ export const HeroSection: React.FC = () => {
                   <div className="absolute bottom-4 left-4 z-20">
                     <div className="px-3 py-1 rounded-lg bg-[#080A14]/80 backdrop-blur-md border border-[#282D40] text-[11px] font-medium text-[#B8BDCA] flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FFA500]" />
-                      Studio Production Suite
+                      KC NEXUS Production Suite
                     </div>
                   </div>
                 </div>

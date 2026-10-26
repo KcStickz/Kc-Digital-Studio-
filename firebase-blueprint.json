@@ -1,0 +1,205 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Project",
+      "description": "Portfolio project record showcase item",
+      "type": "object",
+      "properties": {
+        "slug": {
+          "type": "string",
+          "description": "URL-friendly unique slug for project detail routing",
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "description": "Project title",
+          "maxLength": 150
+        },
+        "category": {
+          "type": "string",
+          "description": "Category display name",
+          "maxLength": 80
+        },
+        "filterCategory": {
+          "type": "string",
+          "description": "One of the 8 canonical portfolio categories",
+          "enum": [
+            "Graphic Design",
+            "Video Editing",
+            "Photography",
+            "Videography",
+            "Web Development",
+            "Software Development",
+            "Social Media Management",
+            "IT Support"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "Short project synopsis",
+          "maxLength": 300
+        },
+        "fullOverview": {
+          "type": "string",
+          "description": "In-depth overview and case study details",
+          "maxLength": 5000
+        },
+        "image": {
+          "type": "string",
+          "description": "Featured image URL or storage download URL",
+          "maxLength": 2048
+        },
+        "videoUrl": {
+          "type": "string",
+          "description": "Optional video stream or YouTube/Vimeo embed URL",
+          "maxLength": 2048
+        },
+        "projectLink": {
+          "type": "string",
+          "description": "Optional external live demo or production link",
+          "maxLength": 2048
+        },
+        "deliverables": {
+          "type": "array",
+          "description": "List of key deliverables or technology badges"
+        },
+        "clientScope": {
+          "type": "string",
+          "description": "Brief description of the client engagement scope",
+          "maxLength": 200
+        },
+        "year": {
+          "type": "string",
+          "description": "Year of project completion",
+          "maxLength": 20
+        },
+        "status": {
+          "type": "string",
+          "description": "Publication state",
+          "enum": ["published", "draft"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Server creation timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Server update timestamp"
+        }
+      },
+      "required": [
+        "slug",
+        "title",
+        "category",
+        "filterCategory",
+        "description",
+        "fullOverview",
+        "status"
+      ]
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Portfolio category classification",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Display name of category",
+          "maxLength": 80
+        },
+        "slug": {
+          "type": "string",
+          "description": "URL slug for category filter",
+          "maxLength": 80
+        },
+        "order": {
+          "type": "number",
+          "description": "Visual sort order priority"
+        }
+      },
+      "required": ["name", "slug", "order"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Authorized administrator user role mapping",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Admin email address",
+          "maxLength": 255
+        },
+        "role": {
+          "type": "string",
+          "description": "User authorization tier",
+          "enum": ["admin", "superadmin"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["email", "role"]
+    },
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "Inquiry submitted through website contact form",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Client full name",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "description": "Client email address",
+          "maxLength": 255
+        },
+        "phone": {
+          "type": "string",
+          "description": "Client phone or WhatsApp number",
+          "maxLength": 50
+        },
+        "service": {
+          "type": "string",
+          "description": "Requested service name",
+          "maxLength": 100
+        },
+        "message": {
+          "type": "string",
+          "description": "Client project brief or inquiry message",
+          "maxLength": 3000
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the inquiry",
+          "enum": ["new", "read", "responded", "archived"]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp"
+        }
+      },
+      "required": ["name", "email", "service", "message", "status"]
+    }
+  },
+  "firestore": {
+    "/projects/{projectId}": {
+      "schema": "Project",
+      "description": "Portfolio projects collection supporting live publication and draft states"
+    },
+    "/categories/{categoryId}": {
+      "schema": "Category",
+      "description": "Portfolio categorization taxonomy"
+    },
+    "/admins/{adminUid}": {
+      "schema": "Admin",
+      "description": "Authorized administrative profiles allowing access to the studio dashboard"
+    },
+    "/messages/{messageId}": {
+      "schema": "ContactMessage",
+      "description": "Inbound client contact and service inquiries"
+    }
+  }
+}

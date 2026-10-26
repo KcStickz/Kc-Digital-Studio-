@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { X, ArrowRight, Check, Calendar, Tag, ExternalLink } from 'lucide-react';
+import { X, ArrowRight, Check, Calendar, Tag, ExternalLink, Video } from 'lucide-react';
 import { ProjectItem } from '../data/studioData';
+import { isEmbedVideo, getEmbedVideoUrl } from '../utils/mediaUtils';
 
 interface ProjectDetailModalProps {
   project: ProjectItem | null;
@@ -38,10 +39,12 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
             <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FFA500]/15 text-[#FFA500] border border-[#FFA500]/30">
               {project.category}
             </span>
-            <span className="text-xs text-[#858DA2] flex items-center gap-1 font-mono">
-              <Calendar className="w-3.5 h-3.5" />
-              {project.year}
-            </span>
+            {project.year && (
+              <span className="text-xs text-[#858DA2] flex items-center gap-1 font-mono">
+                <Calendar className="w-3.5 h-3.5" />
+                {project.year}
+              </span>
+            )}
           </div>
           <button
             onClick={onClose}
@@ -52,14 +55,46 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
           </button>
         </div>
 
-        {/* Hero Visual Image */}
+        {/* Media Preview: Video Player or Image Visual */}
         <div className="relative aspect-video w-full bg-black overflow-hidden group">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0D111E] via-transparent to-transparent opacity-90" />
+          {project.videoUrl ? (
+            isEmbedVideo(project.videoUrl) ? (
+              <iframe
+                src={getEmbedVideoUrl(project.videoUrl)}
+                title={project.title}
+                className="w-full h-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <video
+                src={project.videoUrl}
+                poster={project.image}
+                controls
+                playsInline
+                preload="metadata"
+                className="w-full h-full object-contain bg-black"
+              >
+                Your browser does not support the video tag.
+              </video>
+            )
+          ) : project.image ? (
+            <>
+              <img
+                src={project.image}
+                alt={project.title}
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src = '/projects/portfolio_branding_1791501556017.jpg';
+                }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0D111E] via-transparent to-transparent opacity-90" />
+            </>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-[#121727] text-[#858DA2]">
+              <span className="text-sm">KC Digital Studio Creative Project</span>
+            </div>
+          )}
         </div>
 
         {/* Content Body */}
@@ -69,32 +104,35 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
               {project.title}
             </h3>
             <p className="text-sm sm:text-base text-[#B8BDCA] leading-relaxed">
-              {project.fullOverview}
+              {project.fullOverview || project.description}
             </p>
           </div>
 
           {/* Key Deliverables */}
-          <div className="p-5 rounded-xl bg-[#121727] border border-[#282D40]">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#FFA500] mb-3 flex items-center gap-2">
-              <Tag className="w-3.5 h-3.5" />
-              Deliverables & Capabilities Included
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              {project.deliverables.map((item, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-xs sm:text-sm text-white/90">
-                  <div className="w-4 h-4 rounded-full bg-[#FFA500]/20 flex items-center justify-center text-[#FFA500] shrink-0">
-                    <Check className="w-3 h-3 stroke-[2.5]" />
+          {project.deliverables && project.deliverables.length > 0 && (
+            <div className="p-5 rounded-xl bg-[#121727] border border-[#282D40]">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-[#FFA500] mb-3 flex items-center gap-2">
+                <Tag className="w-3.5 h-3.5" />
+                Deliverables &amp; Capabilities Included
+              </h4>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {project.deliverables.map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-2 text-xs sm:text-sm text-white/90">
+                    <div className="w-4 h-4 rounded-full bg-[#FFA500]/20 flex items-center justify-center text-[#FFA500] shrink-0">
+                      <Check className="w-3 h-3 stroke-[2.5]" />
+                    </div>
+                    <span>{item}</span>
                   </div>
-                  <span>{item}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Scope Note */}
           <div className="text-xs text-[#858DA2] bg-[#080A14] p-3.5 rounded-lg border border-[#282D40]/60 flex items-center justify-between">
             <span>
-              <strong className="text-white/80">Classification:</strong> {project.clientScope}
+              <strong className="text-white/80">Classification:</strong>{' '}
+              {project.clientScope || 'KC Digital Studio Creative Work'}
             </span>
             <span className="text-[#FFA500] font-medium">KC Digital Studio Portfolio</span>
           </div>
@@ -104,15 +142,28 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({
             <p className="text-xs text-[#858DA2]">
               Need a similar solution for your brand or business?
             </p>
-            <div className="flex items-center gap-3 w-full sm:w-auto">
+            <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+              {/* Optional Project External Link */}
+              {project.projectLink && (
+                <a
+                  href={project.projectLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#121727] hover:bg-[#161B2D] border border-[#FFA500]/60 text-white font-semibold text-xs sm:text-sm tracking-wide transition-all"
+                >
+                  <span>Visit Project Link</span>
+                  <ExternalLink className="w-4 h-4 text-[#FFA500]" />
+                </a>
+              )}
+
               <button
                 onClick={() => {
                   onClose();
                   onEnquireProject(project.category);
                 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#FFA500] hover:bg-[#FFB52E] text-black font-semibold text-sm tracking-wide transition-all shadow-md shadow-[#FFA500]/20"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#FFA500] hover:bg-[#FFB52E] text-black font-semibold text-xs sm:text-sm tracking-wide transition-all shadow-md shadow-[#FFA500]/20"
               >
-                Start a Similar Project
+                <span>Start a Similar Project</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

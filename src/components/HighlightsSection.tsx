@@ -1,44 +1,43 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { PenTool, Laptop, Camera, Share2 } from 'lucide-react';
 
-interface HighlightsSectionProps {
-  onSelectService?: (serviceName: string) => void;
-}
+export const HighlightsSection: React.FC = () => {
+  const navigate = useNavigate();
 
-export const HighlightsSection: React.FC<HighlightsSectionProps> = ({ onSelectService }) => {
   const cards = [
     {
       icon: PenTool,
       title: 'Graphic Design',
       description: 'Creative visuals and brand communication.',
-      serviceTarget: 'Graphic Design',
+      path: '/portfolio',
+      filter: 'Graphic Design',
     },
     {
       icon: Laptop,
       title: 'Digital Development',
       description: 'Websites and practical digital solutions.',
-      serviceTarget: 'Web Development',
+      path: '/services',
+      filter: 'Web Development',
     },
     {
       icon: Camera,
       title: 'Visual Production',
       description: 'Photography, videography, and video editing.',
-      serviceTarget: 'Photography',
+      path: '/portfolio',
+      filter: 'Photography',
     },
     {
       icon: Share2,
       title: 'Social Media',
       description: 'Content creation and digital brand management.',
-      serviceTarget: 'Social Media Management',
+      path: '/services',
+      filter: 'Social Media Management',
     },
   ];
 
-  const handleCardClick = (serviceTarget: string) => {
-    if (onSelectService) {
-      onSelectService(serviceTarget);
-    }
-    const servicesSection = document.getElementById('services');
-    servicesSection?.scrollIntoView({ behavior: 'smooth' });
+  const handleCardClick = (path: string) => {
+    navigate(path);
   };
 
   return (
@@ -50,7 +49,7 @@ export const HighlightsSection: React.FC<HighlightsSectionProps> = ({ onSelectSe
             return (
               <div
                 key={idx}
-                onClick={() => handleCardClick(card.serviceTarget)}
+                onClick={() => handleCardClick(card.path)}
                 className="group relative bg-[#121727] hover:bg-[#161B2D] border border-[#282D40] hover:border-[#FFA500]/50 rounded-2xl p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between cursor-pointer shadow-lg hover:shadow-[0_8px_25px_rgba(255,165,0,0.08)] hover:-translate-y-0.5"
               >
                 <div className="flex items-start gap-4">
